@@ -1,5 +1,6 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
+// const sgMail = require('@sendgrid/mail');
 
 module.exports = {
     signUp(req, res, next){
@@ -20,6 +21,18 @@ module.exports = {
             } else {
                 passport.authenticate("local")(req, res, () => {
                 req.flash("notice", "You've successfully signed in!");
+
+                // console.log('API KEY: ', process.env.SENDGRID_API_KEY);
+                // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                // const msg = {
+                //     to: user.email,
+                //     from: 'evgheni@blocipedia.com',
+                //     subject: 'Welcome to Blocipedia!',
+                //     text: `We are welcome you ${user.name} to Blocipedia !`,
+                //     html: `<strong>Welcome to Blocipedia ${user.name}!</strong>`,
+                // };
+                // sgMail.send(msg);
+
                 res.redirect("/");
                 })
             }
