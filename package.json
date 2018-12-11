@@ -10,7 +10,8 @@
   "author": "Evgheni Curdov",
   "license": "ISC",
   "devDependencies": {
-    "jasmine": "^3.0.0",
+    "faker": "^4.1.0",
+    "jasmine": "^3.3.1",
     "request": "^2.83.0"
   },
   "dependencies": {

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     },
     userId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       onDelete: "CASCADE",
       references: {
-        model: "User",
+        model: "Users",
         key: "id",
         as: "userId"
       }
