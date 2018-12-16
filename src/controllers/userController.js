@@ -46,5 +46,42 @@ module.exports = {
         req.logout();
         req.flash("notice", "You've successfully signed out!");
         res.redirect("/");
+    },
+
+    upgrade(req, res, next) {
+                
+        userQueries.upgradeUser(req, (err, user) => {
+            if(err || user == null) {
+                res.redirect(401, '/');
+            } else {
+                req.flash('notice', 'Your account has been upgraded! You will receive a confirmation email shortly.')
+                res.redirect(`/users/${req.params.id}`);
+            }
+        });
+    },
+
+    downgrade(req, res, next) {
+        userQueries.downgradeUser(req, (err, user) => {
+            if(err || user == null) {
+                // console.log(err);
+                req.flash("error", err);
+                res.redirect(err, '/');
+            } else {
+                req.flash('notice','Your account has been downgraded');
+                res.redirect(`/users/${req.params.id}`);
+            }
+        });
+    },
+
+    show(req, res, next) {
+        userQueries.getUser(req.params.id, (err, result) => {
+            console.log(result);
+            if(err || result.user === undefined) {
+                req.flash('notice', 'User not found');
+                res.redirect('/');
+            } else {
+                res.render('users/show', {user});
+            }
+        });
     }
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <% include ../static/partials/head.ejs %>
+  </head>
+    <body>
+
+      <% include ../static/partials/navbar.ejs %>
+
+        <main class="container">
+            <% include ../static/partials/messages.ejs %>
+
+            <h1><%= `${user.name}'s Profile` %></h1>
+
+            <div>
+                <h5><%= currentUser.role %> account</h5>
+                <div>
+                    <p>Upgrade</p>
+                    <% if(currentUser.role === 'premium') { %>
+                    <div>
+                            <form style="display:initial" action="/users/<%= currentUser.id %>/downgrade" method="post">
+                                <button type="submit" class="btn btn-danger">Downgrade</button>
+                            </form>
+                    </div>
+                    <% } %>
+                    <% if(currentUser.role === 'standard') { %>
+                        <div>
+                            <form style="display:initial" action="/users/<%= currentUser.id %>/upgrade" method="get">
+                                <button type="submit" class="btn btn-primary">Update to Premium</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        
+        </main>
+
+      <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>
