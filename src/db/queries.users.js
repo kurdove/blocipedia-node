@@ -33,8 +33,8 @@ module.exports = {
         })
     },
 
-    upgradeUser(req, callback) {
-        return User.findById(req.params.id)
+    upgradeUser(id, callback) {
+        return User.findById(id)
            .then((user) => {
             if(!user) {
             return callback('User not found');

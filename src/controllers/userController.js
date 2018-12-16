@@ -49,9 +49,19 @@ module.exports = {
     },
 
     upgrade(req, res, next) {
+        var stripe = require("stripe")("sk_test_EiwYhcvnQvuaLlAFZlxFeRVH");
+		const token = req.body.stripeToken;
+        const chargeAmount = req.body.chargeAmount;
+        const charge = stripe.charges.create({
+            amount: chargeAmount,
+            currency: 'usd',
+            description: 'Premium account charge',
+            source: token
+        });
                 
-        userQueries.upgradeUser(req, (err, user) => {
+        userQueries.upgradeUser(req.params.id, (err, user) => {
             if(err || user == null) {
+                console.log('UPGRADE ERROR :', err);
                 res.redirect(401, '/');
             } else {
                 req.flash('notice', 'Your account has been upgraded! You will receive a confirmation email shortly.')
@@ -63,7 +73,6 @@ module.exports = {
     downgrade(req, res, next) {
         userQueries.downgradeUser(req, (err, user) => {
             if(err || user == null) {
-                // console.log(err);
                 req.flash("error", err);
                 res.redirect(err, '/');
             } else {
@@ -74,9 +83,8 @@ module.exports = {
     },
 
     show(req, res, next) {
-        userQueries.getUser(req.params.id, (err, result) => {
-            console.log(result);
-            if(err || result.user === undefined) {
+        userQueries.getUser(req.params.id, (err, user) => {
+            if(err || user === undefined) {
                 req.flash('notice', 'User not found');
                 res.redirect('/');
             } else {
