@@ -1,6 +1,5 @@
 const wikiQueries = require("../db/queries.wikis.js");
-const Private = require('../policies/privateWikis.js');
-const Public = require('../policies/application.js');
+const Authorized = require('../policies/application.js');
 
 module.exports = {
     index(req, res, next){
@@ -14,7 +13,7 @@ module.exports = {
     },
 
     new(req, res, next){
-        const authorized = new Public(req.user).new();
+        const authorized = new Authorized(req.user).new();
 
         if(authorized){
             res.render("wikis/new");
@@ -25,27 +24,14 @@ module.exports = {
     },
 
     create(req, res, next){
-        var isPrivate;
-        var authorized;
-        
-        if(!req.body.private || req.body.private == 'false') {
-            isPrivate = false;
-            authorized = new Public(req.user).create();
-            
-        } else if(req.body.private == 'true' && req.user.role == 'standard') {
-            isPrivate = false;
-            authorized = new Public(req.user).create();
-        }     
-        else {
-             isPrivate = true;
-             authorized = new Private(req.user).create();
-        }
+        var authorized = new Authorized(req.user).create();
 
         if(authorized) {
             let newWiki = {
             title: req.body.title,
             body: req.body.body,
-            userId: req.user.id 
+            userId: req.user.id,
+            private: req.body.private || false
             };
             wikiQueries.addWiki(newWiki, (err, wiki) => {
                 if(err){
@@ -65,7 +51,7 @@ module.exports = {
             if(err || wiki == null){
                 res.redirect(404, "/");
             } else if(wiki.private == true){
-                const authorized = new Private(req.user).show();
+                const authorized = new Authorized(req.user).show();
 
                 if(authorized) {
                     res.render('wikis/show', {wiki});
@@ -94,9 +80,9 @@ module.exports = {
             var authorized;
   
             if(wiki.private == true) {
-              authorized = new Private(req.user).edit();
+              authorized = new Authorized(req.user).edit();
             } else {
-                authorized = new Public(req.user).edit();
+                authorized = new Authorized(req.user).edit();
             }
   
             if(authorized) {

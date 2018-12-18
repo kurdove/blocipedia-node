@@ -15,7 +15,7 @@
             <div>
                 <h5><%= `You are on ${user.role} plan` %></h5>
                 <div>
-                    <p>Upgrade</p>
+                    <p class="upgrade-section"><strong>Upgrade</strong></p>
                     <% if(currentUser.role === 'premium') { %>
                     <div>
                             <form style="display:initial" action="/users/<%= currentUser.id %>/downgrade" method="post">
@@ -44,6 +44,22 @@
                         </div>
                     <% } %>
                 </div>
+            </div>
+
+            <div class="wikis-list">
+                <h5>Your Wikis</h5>
+                <ul class="list-unstyled">
+                <% if(user.wikis) { %>
+                    <% user.wikis.forEach((wiki) => { %>
+                    <li>
+                        <a href="/wikis/<%= wiki.id %>">
+                        <%= wiki.title %>
+                        </a>
+                    </li>
+                    <% }) %>
+                <% } %>
+                </ul>
+                <a href="/wikis/new" class="btn btn-success">New Wiki</a>
             </div>
         
         </main>

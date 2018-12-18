@@ -1,5 +1,6 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
+const stripe = require("stripe")("sk_test_EiwYhcvnQvuaLlAFZlxFeRVH");
 
 module.exports = {
     signUp(req, res, next){
@@ -49,7 +50,7 @@ module.exports = {
     },
 
     upgrade(req, res, next) {
-        var stripe = require("stripe")("sk_test_EiwYhcvnQvuaLlAFZlxFeRVH");
+        
 		const token = req.body.stripeToken;
         const chargeAmount = req.body.chargeAmount;
         const charge = stripe.charges.create({
