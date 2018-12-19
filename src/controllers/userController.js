@@ -1,7 +1,6 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
 const stripe = require("stripe")("sk_test_EiwYhcvnQvuaLlAFZlxFeRVH");
-const Wiki = require("./models").Wiki;
 
 module.exports = {
     signUp(req, res, next){
