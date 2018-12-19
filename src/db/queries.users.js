@@ -56,7 +56,19 @@ module.exports = {
             if(!user) {
             return callback('User not found');
             } else {
-                return user.update({role: 'standard'})
+                user.update({role: 'standard'})
+                .then((user) => {
+                    Wiki.findAll({where: {userId: user.id}})
+                    .then((wikis) => {
+                        wikis.update({private: false})
+                        .then((wiki) => {
+                            callback(null, wiki);
+                        })
+                        .catch((err) => {
+                            callback(err);
+                        })
+                    });
+                })
                 .then(() => {
                     callback(null, user);
                 })

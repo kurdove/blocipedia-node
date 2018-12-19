@@ -18,7 +18,7 @@ module.exports = {
       title: newWiki.title,
       body: newWiki.body,
       userId: newWiki.userId,
-      private: false
+      private: newWiki.private
     })
     .then((wiki) => {
       callback(null, wiki);
