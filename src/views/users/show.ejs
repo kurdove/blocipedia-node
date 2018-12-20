@@ -54,13 +54,13 @@
                         <% if(currentUser) { %>
                         <% if(currentUser.isAdmin() || currentUser.isPremium()) { %>
                             <li class="list-group-item">
-                            <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+                            <a href="/wikis/<%= wiki.id %>"> <%- wiki.title %> </a>
                             </li>
                         <% } %>
                         <% } %>
                     <% } else { %>
                         <li class="list-group-item">
-                        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+                        <a href="/wikis/<%= wiki.id %>"> <%- wiki.title %> </a>
                         </li>
                     <% } %>
                     <% }) %>
