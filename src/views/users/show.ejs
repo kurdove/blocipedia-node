@@ -19,7 +19,7 @@
                     <% if(currentUser.role === 'premium') { %>
                     <div>
                             <form style="display:initial" action="/users/<%= currentUser.id %>/downgrade" method="post">
-                                <button type="submit" class="btn btn-danger">Downgrade</button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Your Wikis will becaome public!\nAre you sure you want to downgrade?')">Downgrade</button>
                             </form>
                     </div>
                     <% } %>
@@ -48,16 +48,22 @@
 
             <div class="wikis-list">
                 <h5>Your Wikis</h5>
-                <ul class="list-unstyled">
-                <% if(user.wikis) { %>
+                <ul class="list-group">
                     <% user.wikis.forEach((wiki) => { %>
-                    <li>
-                        <a href="/wikis/<%= wiki.id %>">
-                        <%= wiki.title %>
-                        </a>
-                    </li>
+                    <% if(wiki.private) { %>
+                        <% if(currentUser) { %>
+                        <% if(currentUser.isAdmin() || currentUser.isPremium()) { %>
+                            <li class="list-group-item">
+                            <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+                            </li>
+                        <% } %>
+                        <% } %>
+                    <% } else { %>
+                        <li class="list-group-item">
+                        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+                        </li>
+                    <% } %>
                     <% }) %>
-                <% } %>
                 </ul>
                 <a href="/wikis/new" class="btn btn-success">New Wiki</a>
             </div>

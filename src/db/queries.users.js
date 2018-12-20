@@ -63,21 +63,15 @@ module.exports = {
                         wikis.forEach((wiki)=>{
                             wiki.update({private: false});
                         })
-                        .then((wiki) => {
-                            callback(null, wiki);
-                        })
-                        .catch((err) => {
-                            console.log('ERROR 01: ', err);
-                            callback(err);
-                        });
+                    })
+                    .then(() => {
+                        callback(null, user);
                     })
                     .catch((err) => {
-                        console.log('ERROR 02: ', err);
                         callback(err);
                     })
                 })
                 .catch((err) => {
-                    console.log('ERROR 03: ', err);
                     callback(err);
                 });
             }
