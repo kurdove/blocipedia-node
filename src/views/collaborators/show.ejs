@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <% include ../static/partials/head.ejs %>
+  </head>
+    <body>
+
+      <% include ../static/partials/navbar.ejs %>
+
+        <main class="container">
+            <% include ../static/partials/messages.ejs %>
+
+            <h1>Collaborators</h1>
+
+            <ul class="list-group">
+            <% users.forEach((user) => { %>
+                
+                <li class="list-group-item flex-column align-items-start">
+                
+                    <a href="#" class='float-left'> <%= user.name %> </a> 
+                    <form action='#' method='post'>
+                        <button type='submit' class='btn btn-danger float-right'>Delete</button>
+                    </form>
+                
+                </li>
+                
+            <% }) %>
+            </ul>
+
+            <a href="/wikis/<%= wiki.id %>/collaborators/new" class="btn btn-warning">Add Collaborator</a>
+        
+        </main>
+
+      <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>

@@ -54,12 +54,22 @@
                         <% if(currentUser) { %>
                         <% if(currentUser.isAdmin() || currentUser.isPremium()) { %>
                             <li class="list-group-item">
+                            <% if(!wiki.private) { %>
+                                <small> public wiki </small> </br>
+                            <% } else { %>
+                                <small> private wiki </small> </br>
+                            <% } %>
                             <a href="/wikis/<%= wiki.id %>"> <%- wiki.title %> </a>
                             </li>
                         <% } %>
                         <% } %>
                     <% } else { %>
                         <li class="list-group-item">
+                        <% if(!wiki.private) { %>
+                            <small> public wiki </small> </br>
+                        <% } else { %>
+                            <small> private wiki </small> </br>
+                        <% } %>
                         <a href="/wikis/<%= wiki.id %>"> <%- wiki.title %> </a>
                         </li>
                     <% } %>
