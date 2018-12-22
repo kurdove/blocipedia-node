@@ -1,4 +1,6 @@
 const Wiki = require("./models").Wiki;
+const Collaborator = require("./models").Collaborator;
+const User = require("./models").User;
 const Public = require('../policies/application');
 const Private = require('../policies/privateWikis');
 
@@ -66,8 +68,11 @@ module.exports = {
   },
 
   updateWiki(req, updatedWiki, callback) {
-    return Wiki.findById(req.params.id)
+    return Wiki.findById(req.params.id, {
+      include: [{model: Collaborator, as: "collaborators"}]
+    })
     .then((wiki) => {
+      // console.log(wiki.collaborators);
 
       if(!wiki) {
         return callback('Wiki not found');
@@ -82,12 +87,30 @@ module.exports = {
 
       if(authorized) {
         wiki.update(updatedWiki, {
-            fields: Object.keys(updatedWiki)
+          fields: Object.keys(updatedWiki)
         })
-        .then(() => {
-          callback(null, wiki);
+        .then((wiki) =>{
+          User.findAll({where: {name: updatedWiki.collaborator}})
+          .then((user) => {
+            console.log("user :", user);
+            console.log("user id :", user.id);
+            console.log("user name :", user.name);
+
+            Collaborator.create({
+              userId: user.id,
+              wikiId: wiki.id
+            })
+            .then(() => {
+              callback(null, user);
+            })
+            .catch((err) => {
+              console.log("err1 :", err);
+              callback(err);
+            })
+          })
         })
         .catch((err) => {
+          console.log("err2 :", err);
           callback(err);
         });
       } else {

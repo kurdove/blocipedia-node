@@ -30,7 +30,7 @@ module.exports = {
 
         if(authorized) {
             let newWiki = {
-            title: markdown.toHTML(req.body.title),
+            title: req.body.title,
             body: markdown.toHTML(req.body.body),
             userId: req.user.id,
             private: req.body.private || false

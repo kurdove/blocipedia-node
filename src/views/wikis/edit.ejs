@@ -28,17 +28,23 @@
 
         <% if(currentUser) { %>
           <% if(currentUser.id === wiki.userId && (currentUser.isAdmin() || currentUser.isPremium())) { %>
-            <div class="form-check">
-              <% if(wiki.private == true) { %>
-                <input class="form-check-input" checked='checked' name="private" type="checkbox" value="true" id="privateWiki">
-              <% } else { %>
-                  <input class="form-check-input" name="private" type="checkbox" value="true" id="privateWiki">
-              <% } %>
-                <label class="form-check-label" for="privateWiki">
-                  Private Wiki
-                </label>
-            </div>
-            <a href="/wikis/<%= wiki.id %>/collaborators" class="btn btn-warning">Add Pal</a>
+          <div class="form-group">
+            <label for="title">Add Collaborator</label>
+            <input type="text" class="form-control" name="collaborator" aria-describedby="titleHelp" placeholder="Username">
+            <small class="text-muted" id="titleHelp">username must be 2 or more characters in length.</small>
+          </div>
+          
+          <div class="form-check">
+            <% if(wiki.private == true) { %>
+              <input class="form-check-input" checked='checked' name="private" type="checkbox" value="true" id="privateWiki">
+            <% } else { %>
+                <input class="form-check-input" name="private" type="checkbox" value="true" id="privateWiki">
+            <% } %>
+              <label class="form-check-label" for="privateWiki">
+                Private Wiki
+              </label>
+          </div>
+         
           <% } %>
         <% } %>
 
