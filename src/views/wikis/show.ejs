@@ -18,6 +18,13 @@
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       <p><%- wiki.body %></p>
+
+      <h6>Collaborators</h6>
+      <a href="/wikis/<%= wiki.id %>/collaborators" class='float-left'>
+      <% wiki.collaborators.forEach((user) => { %>
+         <%= user.id %>&nbsp|
+      <% }) %>
+      </a>
      
       </main>
 

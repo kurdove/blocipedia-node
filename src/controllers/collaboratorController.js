@@ -1,14 +1,26 @@
 const collaboratorQueries = require("../db/queries.collaborators.js");
 const wikiQueries = require("../db/queries.wikis.js");
+const User = require("../db/models").User;
 
 module.exports = {
    	show(req, res, next) {
-      	collaboratorQueries.getAllCollaborators((err, users) => {
+      	collaboratorQueries.getAllCollaborators(req.params.id, (err, collaborators) => {
         	if(err){
          		console.log(err);
             	res.redirect(500, "static/index");
         	} else {
-                res.render("collaborators/show", {users});
+                // // var collabs;
+                // for (let i = 0; i < collaborators.length; i++) {
+                //     // console.log( collaborators[i].userId);
+                //     User.findOne({where: {id: collaborators[i].userId}})
+                //     .then((users) => {
+                //         console.log("users :", users.name);
+                //         var collabs = users;
+                //         console.log("collabs :", collabs.name);
+                //     })
+                // }
+                // console.log("collabs2 :", collabs);
+                res.render("collaborators/show", {collaborators});
         	}
      	});
     },

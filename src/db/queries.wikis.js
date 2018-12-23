@@ -31,8 +31,11 @@ module.exports = {
   },
 
   getWiki(id, callback){
-    return Wiki.findById(id)
+    return Wiki.findById(id, {
+      include: [{model: Collaborator, as: "collaborators"}]
+    })
     .then((wiki) => {
+      // console.log('collaborators', wiki.collaborators);
       callback(null, wiki);
     })
     .catch((err) => {
@@ -68,11 +71,9 @@ module.exports = {
   },
 
   updateWiki(req, updatedWiki, callback) {
-    return Wiki.findById(req.params.id, {
-      include: [{model: Collaborator, as: "collaborators"}]
-    })
+    return Wiki.findById(req.params.id)
     .then((wiki) => {
-      // console.log(wiki.collaborators);
+      
 
       if(!wiki) {
         return callback('Wiki not found');
@@ -90,12 +91,8 @@ module.exports = {
           fields: Object.keys(updatedWiki)
         })
         .then((wiki) =>{
-          User.findAll({where: {name: updatedWiki.collaborator}})
+          User.findOne({where: {name: updatedWiki.collaborator}})
           .then((user) => {
-            console.log("user :", user);
-            console.log("user id :", user.id);
-            console.log("user name :", user.name);
-
             Collaborator.create({
               userId: user.id,
               wikiId: wiki.id
