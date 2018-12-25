@@ -1,5 +1,5 @@
 const Collaborator = require("./models").Collaborator;
-const User = require("./models").User;
+const Wiki = require("./models").Wiki;
 
 module.exports = {
 	getAllCollaborators(wikiId, callback){
@@ -7,36 +7,41 @@ module.exports = {
 			{where: {wikiId: wikiId}}
 		)
 		.then((collaborators) => {
-			// console.log("collabs :", collaborators.users);
 		  	callback(null, collaborators);
 		})
 		.catch((err) => {
 		  	callback(err);
 		})
 	},
-	// getAllCollaborators(wikiId, callback){
-	// 	return Collaborator.findAll(
-	// 		{where: {wikiId: wikiId}}
-	// 	)
-	// 	.then((collaborators) => {
-	// 		// console.log("COLLABS :",collaborators.users);
-	// 		// console.log("COLLABS :",collaborators.userId);
-	// 		User.findAll({where: {id: collaborators.userId}})
-    //         .then((users) => {
-    //           callback(null, users);
-    //         })
-    //         .catch((err) => {
-    //           console.log("err1 :", err);
-    //           callback(err);
-	// 		})
 
-	// 	})
-	// 	.catch((err) => {
-	// 	  	callback(err);
-	// 	})
-	// },
-    
-	removeCollaborator(req, collaboratorInfo, callback){
-		
-	}
+	removeCollaborator(wikiId, collabName, callback) {
+		return Collaborator.findOne({
+			where: {
+				wikiId: wikiId,
+				collabName: collabName
+			}
+		})
+		.then((collab) => {
+			if(collab){
+				Collaborator.destroy({
+					where: {
+						id: collab.id
+					}
+				})
+				.then((collab) => {
+					callback(null, collab);
+				})
+				.catch((err) => {
+					console.log("ERR2 :", err);
+					callback(err);
+				})
+			} else {
+				callback("error", "Collaborator is no longer on this wiki");
+			}
+		}) 
+		.catch((err) => {
+			console.log("ERR2 :", err);
+		  	callback(err);
+		});
+	},
 }

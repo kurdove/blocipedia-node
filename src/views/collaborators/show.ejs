@@ -17,9 +17,9 @@
                 
                 <li class="list-group-item flex-column align-items-start">
                 
-                    <a href="#" class='float-left'> <%= user.name %> </a> 
-                    <form action='#' method='post'>
-                        <button type='submit' class='btn btn-danger float-right'>Delete</button>
+                    <a href="#" class='float-left'> <%= user.collabName %> </a> 
+                    <form action="/wikis/<%= user.wikiId %>/collaborators/destroy" method='post'>
+                        <button type='submit' class='btn btn-danger float-right' name="collabName" value="<%= user.collabName %>">Delete</button>
                     </form>
                 
                 </li>

@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     wikiId: {
     	type: DataTypes.INTEGER,
     	allowNull: false
+    },
+    collabName: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {});
   Collaborator.associate = function(models) {

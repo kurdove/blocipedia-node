@@ -93,18 +93,36 @@ module.exports = {
         .then((wiki) =>{
           User.findOne({where: {name: updatedWiki.collaborator}})
           .then((user) => {
-            Collaborator.create({
-              userId: user.id,
-              wikiId: wiki.id
-            })
-            .then(() => {
+              // Collaborator.create({
+              //   userId: user.id,
+              //   wikiId: wiki.id,
+              //   collabName: user.name
+              // })
+              // .then((user) => {
+              //   callback(null, user);
+              // })
+              // .catch((err) => {
+              //   console.log("err1 :", err);
+              //   callback(err);
+              // });
+            if(!user){
+              Collaborator.create({
+                userId: user.id,
+                wikiId: wiki.id,
+                collabName: user.name
+              })
+              .then((user) => {
+                callback(null, user);
+              })
+              .catch((err) => {
+                console.log("err1 :", err);
+                callback(err);
+              });
+            } else {
+              req.flash('notice', `${user.name} already in collaborator list`);
               callback(null, user);
-            })
-            .catch((err) => {
-              console.log("err1 :", err);
-              callback(err);
-            })
-          })
+            }
+          });
         })
         .catch((err) => {
           console.log("err2 :", err);

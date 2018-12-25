@@ -4,7 +4,6 @@
   <% include ../static/partials/head.ejs %>
   </head>
     <body>
-
       <% include ../static/partials/navbar.ejs %>
 
       <main class="container">
@@ -12,19 +11,27 @@
 
       <h1><%= wiki.title %></h1>
 
-        <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
+      <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
 
-        <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
+      <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+
       <p><%- wiki.body %></p>
 
       <h6>Collaborators</h6>
-      <a href="/wikis/<%= wiki.id %>/collaborators" class='float-left'>
-      <% wiki.collaborators.forEach((user) => { %>
-         <%= user.id %>&nbsp|
-      <% }) %>
-      </a>
+    
+      <% if(wiki.collaborators.length == 0) {%>
+        <p>No Collaborators</p>
+      <% } else { %>
+        <a href="/wikis/<%= wiki.id %>/collaborators" class='float-left'>
+          <% wiki.collaborators.forEach((user) => { %>
+            &nbsp<%= user.collabName %>&nbsp|
+          <% }) %>
+        </a>
+      <% } %>
+      
+      
      
       </main>
 

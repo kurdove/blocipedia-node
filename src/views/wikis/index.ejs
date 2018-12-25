@@ -19,7 +19,7 @@
 
       <ul class="list-group">
         <% wikis.forEach((wiki) => { %>
-          <% if(wiki.private) { %>
+          <% if(wiki.private === false || currentUser.isOwner(currentUser, wiki) || currentUser.isCollaborator(currentUser, wiki)) { %>
             <% if(currentUser) { %>
               <% if(currentUser.isAdmin() || currentUser.isPremium()) { %>
                 <li class="list-group-item">
